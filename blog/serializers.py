@@ -6,7 +6,7 @@ class BlogSerializer(serializers.ModelSerializer):
         model = Blog
         fields = ('id',
                  'title',
-                 'author',
+                #  'author',
                  'content',
                  'created_at')
 
