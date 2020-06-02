@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from blog.models import Blog,User
-
+import bcrypt
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
@@ -14,6 +14,17 @@ class BlogSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id',
+        fields = ['id',
                  'username',
-                 'password')
+                 'password']
+        
+    def save(self, validated_data):
+
+        hashedpw = bcrypt.hashpw(validated_data['password'].encode('utf-8'), bcrypt.gensalt())
+        user = User(
+            username=validated_data['username'],
+            password=hashedpw
+        )
+       
+        user.save()
+        return user

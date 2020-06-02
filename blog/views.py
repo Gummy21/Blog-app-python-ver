@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
-
+import bcrypt
 from blog.models import Blog,User
 from blog.serializers import BlogSerializer,UserSerializer
 from rest_framework.decorators import api_view
@@ -56,4 +56,13 @@ def blog_detail(request,pk):
     elif request.method == 'DELETE':
         blog.delete()
         return JsonResponse({'message': 'Blog was deleted'})
-    
+
+@api_view(['POST'])
+def register(request):
+    if request.method == 'POST':
+        user_data = JSONParser().parse(request)
+        user_serializer = UserSerializer(data= user_data)
+        if user_serializer.is_valid():
+            user_serializer.save(user_serializer.validated_data)
+            return JsonResponse(user_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
