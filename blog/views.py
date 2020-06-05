@@ -57,6 +57,7 @@ def blog_detail(request,pk):
         blog.delete()
         return JsonResponse({'message': 'Blog was deleted'})
 
+
 @api_view(['POST'])
 def register(request):
     if request.method == 'POST':
@@ -66,3 +67,15 @@ def register(request):
             user_serializer.save(user_serializer.validated_data)
             return JsonResponse(user_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['POST'])
+def login(request):
+    if request.method == 'POST':
+        user_data = JSONParser().parse(request)
+        username = user_data["username"]
+        password = user_data["password"]
+        user = User.objects.get(username=username)
+        if bcrypt.checkpw(password.encode('utf-8'),user.password.encode('utf-8')):
+            print("Match")
+        else:
+            print("Does not match")
+        return JsonResponse(password, status=status.HTTP_200_OK, safe=False)

@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
         
     def save(self, validated_data):
 
-        hashedpw = bcrypt.hashpw(validated_data['password'].encode('utf-8'), bcrypt.gensalt())
+        hashedpw = bcrypt.hashpw(validated_data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf8')
         user = User(
             username=validated_data['username'],
             password=hashedpw
@@ -28,3 +28,9 @@ class UserSerializer(serializers.ModelSerializer):
        
         user.save()
         return user
+
+
+
+
+
+  
