@@ -75,6 +75,9 @@ def login(request):
         password = user_data["password"]
         user = User.objects.get(username=username)
         if bcrypt.checkpw(password.encode('utf-8'),user.password.encode('utf-8')):
+            userList = {'username':user.username,'id':user.id,'password':user.password}
+            return JsonResponse(userList, status=status.HTTP_200_OK, safe=False)
+            
             print("Match")
         else:
             print("Does not match")
