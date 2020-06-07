@@ -1,0 +1,34 @@
+<div class="edit-form" *ngIf="currentBlog">
+    <h4 *ngFor="let blog of currentBlog">{{blog.title}}</h4>
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          [(ngModel)]="updated.title"
+          name="title"
+        />
+      </div>
+      <div class="form-group">
+        <label for="content">Content</label>
+        <textarea
+          rows="4"
+          type="text"
+          class="form-control"
+          id="content"
+          [(ngModel)]="updated.content"
+          name="content"
+        ></textarea>
+      </div>
+      <button (click)="updateBlog()" class="btn btn-success" >
+        Update
+      </button>
+
+      
+
+</div>
+<div *ngIf="!currentBlog">
+  <br />
+  <p>Cannot access this Blog...</p>
+</div>

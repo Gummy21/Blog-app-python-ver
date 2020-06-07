@@ -1,0 +1,31 @@
+<div class="jumbotron list-header border border-light">
+  <h1 class="display-4">Welcome to a simple blog app</h1>
+  <p class="lead">A very simple blog app</p>
+  <hr class="my-4">
+
+  <div class="input-group mb-2">
+    <input type="text" placeholder="Search by title" [(ngModel)]="title" />
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" (click)="search()">
+        Search
+      </button>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4 card-deck" *ngFor="let blog of blogs; let i = index" [class.active]="i == currentIndex">
+      <div class="card border-light text-center mb-3">
+        <div class="list-group-item">
+          <h5 class="card-title"> {{ blog.title | slice:0:25}}</h5>
+          <small class="text-muted"> By {{blog.auth_name}}</small>
+          <p class="card-text">{{blog.content | slice:0:20}}</p>
+          <a class="badge badge-info card-link" href="/blog/{{ blog.id }}">
+            See full
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
