@@ -7,7 +7,8 @@ class User(models.Model):
         
 class Blog(models.Model):
     title = models.CharField(max_length=100, unique=True)
-    # author = models.ForeignKey(User, on_delete= models.CASCADE,related_name="blog_post")
+    author = models.ForeignKey(User, on_delete= models.CASCADE,related_name="author")
+    auth_name = models.ForeignKey(User, on_delete= models.CASCADE,to_field='username',related_name="auth_name")
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -13,7 +13,6 @@ def blog_list(request):
     #Get all
     if request.method == 'GET':
         blogs = Blog.objects.all()
-
         title = request.GET.get('title', None)
         if title is not None:
             blogs = blogs.filter(title__icontains=title)
@@ -32,6 +31,7 @@ def blog_list(request):
         if blog_serializer.is_valid():
             blog_serializer.save()
             return JsonResponse(blog_serializer.data, status=status.HTTP_201_CREATED)
+        print(blog_serializer.errors)
         return JsonResponse(blog_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -73,12 +73,14 @@ def login(request):
         user_data = JSONParser().parse(request)
         username = user_data["username"]
         password = user_data["password"]
-        user = User.objects.get(username=username)
-        if bcrypt.checkpw(password.encode('utf-8'),user.password.encode('utf-8')):
-            userList = {'username':user.username,'id':user.id,'password':user.password}
-            return JsonResponse(userList, status=status.HTTP_200_OK, safe=False)
-            
-            print("Match")
-        else:
-            print("Does not match")
-        return JsonResponse(password, status=status.HTTP_200_OK, safe=False)
+        try:
+            user = User.objects.get(username=username)
+            if bcrypt.checkpw(password.encode('utf-8'),user.password.encode('utf-8')):
+                userList = {'username':user.username,'id':user.id,'password':user.password}
+                return JsonResponse(userList, status=status.HTTP_202_ACCEPTED, safe=False)
+            else:
+                return JsonResponse('Wrong username or password', status=status.HTTP_404_NOT_FOUND, safe=False)
+
+        except User.DoesNotExist:
+            return JsonResponse('Wrong username', status=status.HTTP_404_NOT_FOUND, safe=False)
+        
