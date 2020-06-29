@@ -1,7 +1,7 @@
 # Blog-app-python-ver
 
-A simple blog app following the rest api with django, some basic authentication and an angular front-end
-
+A simple blog app following the rest api with django, some basic authentication and an angular front-end.
+Last project in the simple blog series
 
 
 ## Description
